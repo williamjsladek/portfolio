@@ -3,6 +3,7 @@
     <head>
         <link rel="icon" type="image/x-icon" href="../Assets/factorio-wheel.png">
         <link rel="stylesheet" href="../CSS/global.css">
+        <link rel="stylesheet" href="../CSS/sudoku.css">
         <!-- instert css links -->
         <script src="https://kit.fontawesome.com/c981f83ac8.js" crossorigin="anonymous"></script>
     </head>
@@ -15,10 +16,10 @@
                 <a href="sudoku.html">Sudoku</a>
             </div>
             <div class="d-flex main">
-                <div class="sudoku_intro">Sudoku</div>
+                <div id="sudoku_intro">My Sudoku Clone!</div>
                 <div id="sudoku_button_menu">
-                    <button onclick="new_game()" id="new_game_button">New Game</button>
-                    <button onclick="" id="reset_button">Reset</button>
+                    <div onclick="new_game()" id="new_game_button">New Game</div>
+                    <div onclick="" id="reset_button">Reset</div>
                 </div>
                 <div id="sudoku_content"></div>
                 <div class="numbers"></div>

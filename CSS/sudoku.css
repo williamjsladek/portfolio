@@ -1,0 +1,61 @@
+:root {
+    --box-thickness: 4px solid var(--pale-pink)
+}
+
+#sudoku_intro {
+    font-size: 50px;
+}
+
+#sudoku_button_menu {
+    display: flex;
+    flex-direction: row;
+}
+
+#sudoku_button_menu div {
+    border: 1px solid var(--pale-pink);
+    color: var(--pink);
+    border-radius: 4px;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px;
+    padding: 5px;
+    user-select: none;
+}
+
+#sudoku_button_menu div:hover {
+    background-color: var(--pale-pink);
+}
+
+#sudoku_content {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    border-left: var(--box-thickness);
+    border-right: var(--box-thickness);
+    display: flex;
+    flex-direction: row;
+}
+
+.cell {
+    border: 1px solid var(--pale-pink);
+    font-size: 25px;
+    font-weight: bold;
+    height: 50px;
+    width: 50px;
+    justify-content: center;
+    align-items: center;
+}
+
+.top_row {
+    border-top: var(--box-thickness);
+}
+
+.bottom_row {
+    border-bottom: var(--box-thickness);
+}
+
+.box_right {
+    border-right: var(--box-thickness);
+}

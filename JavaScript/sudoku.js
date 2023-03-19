@@ -66,11 +66,26 @@ new_game = () => {
     init_numbers();
     make_solution();
     content.innerHTML = "";
-    for (i = 0; i < 81; i++) {
-        content.innerHTML += numbers[i].value + " ";
-        if (findColumn(i) == 8) {
-            content.innerHTML += "<br>";
+    for (let i = 0; i < 9; i ++) {
+        let str = "";
+        if (i == 0) {
+            str += "<div class=\"top_row row\">";
+        } else if (i == 2 || i == 5 || i == 8) {
+            str += "<div class=\"bottom_row row\">";
+        } else {
+            str += "<div class=\"row\">";
         }
+
+        for (let j = 0; j < 9; j++) {
+            if (j == 2 || j == 5) {
+                str += "<div class=\"cell box_right d-flex\">" + numbers[(9 * i) + j].value + "</div>";
+            } else {
+                str += "<div class=\"cell d-flex\">" + numbers[(9 * i) + j].value + "</div>";
+            }
+        }
+
+        str += "</div>";
+        content.insertAdjacentHTML('beforeend', str);
     }
 }
 
