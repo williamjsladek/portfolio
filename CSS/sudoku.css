@@ -52,6 +52,11 @@
     cursor: pointer;
 }
 
+.cToSea:hover {
+    background-color: var(--jet) !important;
+    cursor: default !important;
+}
+
 .top_row {
     border-top: var(--box-thickness);
 }

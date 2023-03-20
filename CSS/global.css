@@ -67,8 +67,9 @@ body {
     background-color: var(--grey);
     color: var(--jet);
     padding: 65px 5px 0px 5px;
-    width: 15%;
-    height: 1000px;
+    width: 230px;
+    height: auto;
+    min-height: 100vh;
     margin-right: 10px;
     margin-left: -15%;
     display: flex;
@@ -107,8 +108,10 @@ body {
     align-items: center;
     padding-top: 10px;
     margin: 0px auto;
+    width: 85%;
 }
 
 .content_title {
     font-size: 50px;
+    text-align: center;
 }
