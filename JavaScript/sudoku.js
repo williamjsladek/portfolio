@@ -1,6 +1,7 @@
 let numbers = [];
 let numbers_state = [];
 let current_solution = [];
+let given_number_indexes = []; // should be length 53
 let done = false;
 
 var content = document.getElementById("sudoku_content");
@@ -65,9 +66,31 @@ function sudokuStep(index) {
     }
 }
 
+function generate_puzzle() {
+    // while (true) {
+        for (let i = 0; i < 81; i++) {
+            given_number_indexes[i] = i;
+        }
+
+        shuffle(given_number_indexes);
+        given_number_indexes.splice(53, 28);
+        given_number_indexes.sort((a, b) => a - b);
+
+        // break;
+        // if (is_valid()) {
+        //     break;
+        // }
+    // }
+}
+
+function is_valid() {
+    
+}
+
 new_game = () => {
     init_numbers();
     make_solution();
+    generate_puzzle();
     content.innerHTML = "";
     for (let i = 0; i < 9; i ++) {
         let str = "";
@@ -80,11 +103,17 @@ new_game = () => {
         }
 
         for (let j = 0; j < 9; j++) {
+            let classList = "cell d-flex", value = "";
             if (j == 2 || j == 5) {
-                str += "<div class=\"cell box_right d-flex\" onclick=\"select_cell(" + ((9 * i) + j) + ")\">" + numbers[(9 * i) + j].value + "</div>";
-            } else {
-                str += "<div class=\"cell d-flex\" onclick=\"select_cell(" + ((9 * i) + j) + ")\">" + numbers[(9 * i) + j].value + "</div>";
+                classList += " box_right";
             }
+            
+            if (given_number_indexes.indexOf((i * 9) + j) > -1) {
+                classList += " cToSea";
+                value = numbers[(i * 9) + j].value;
+            }
+            
+            str += "<div class=\"" + classList + "\" onclick=\"select_cell(" + ((i * 9) + j) + ")\">" + value + "</div>";
         }
 
         str += "</div>";
@@ -102,7 +131,11 @@ reset_game = () => {
                 element.classList.remove("selected");
             }
 
-            element.innerHTML = current_solution[(i * 9) + j].value;
+            if (given_number_indexes.indexOf((i * 9) + j) > -1) {
+                element.innerHTML = numbers[(i * 9) + j].value;
+            } else {
+                element.innerHTML = "";
+            }
         }
     }
 }
@@ -114,7 +147,7 @@ select_cell = (index) => {
             let element = row.children[j];
             if (element.classList.contains("selected") && ((i * 9) + j) != index) {
                 element.classList.remove("selected");
-            } else if (((i * 9) + j) == index) {
+            } else if (((i * 9) + j) == index && !element.classList.contains("cToSea")) {
                 element.classList.add("selected");
             }
         }
@@ -127,6 +160,13 @@ inputNumber = (num) => {
     } else {
         selected.item(0).innerHTML = num;
     }
+    // if ever cell has a number
+    // check_solution();
+    //}
+}
+
+function check_solution() {
+
 }
 
 function divide(num, denom) {

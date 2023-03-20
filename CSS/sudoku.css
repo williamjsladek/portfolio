@@ -94,3 +94,11 @@
 #numbers div:hover {
     background-color: var(--pink);
 }
+
+#information p a {
+    color: var(--pink);
+}
+
+#information p a:visited {
+    color: var(--sea-green);
+}

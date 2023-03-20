@@ -42,6 +42,10 @@ body {
     color: var(--grey) !important;
 }
 
+.cToSea {
+    color: var(--sea-green) !important;
+}
+
 .menu-icon-toggle {
     width: 10% !important;
 }
