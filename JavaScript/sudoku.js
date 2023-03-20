@@ -66,25 +66,75 @@ function sudokuStep(index) {
     }
 }
 
+let cells = [];
+
 function generate_puzzle() {
-    // while (true) {
+    while (true) {
         for (let i = 0; i < 81; i++) {
             given_number_indexes[i] = i;
         }
 
         shuffle(given_number_indexes);
-        given_number_indexes.splice(53, 28);
+        given_number_indexes.splice(Math.floor(Math.random() * 53), 28);
         given_number_indexes.sort((a, b) => a - b);
-
-        // break;
-        // if (is_valid()) {
-        //     break;
-        // }
-    // }
+        cells = [];
+        for (let i = 0; i < 81; i++) {
+            if (given_number_indexes.indexOf(i) > -1) {
+                cells[i] = numbers[i].value;
+            } else {
+                cells[i] = 0;
+            }
+        }
+        
+        if (is_valid(0, 0, 0) == 1) {
+            break;
+        }
+    }
 }
 
-function is_valid() {
+function is_valid(i, j, count) {
+    if (((i * 9) + j) >= 81) {
+        return (count + 1);
+    }
     
+    if (cells[(i * 9) + j] != 0) {
+        if (j == 9) {
+            return is_valid(i + 1, j - 9, count);
+        } else {
+            return is_valid(i, j + 1, count);
+        }
+    }
+
+    for (let val = 1; val <= 9 && count < 2; val++) {
+        if (legal_val(i, j, val)) {
+
+            cells[(i * 9) + j] = val;
+            if (j == 9) {
+                count = is_valid(i + 1, j - 9, count);
+            } else {
+                count = is_valid(i, j + 1, count);
+            }
+        }
+    }
+
+    cells[(i * 9) + j] = 0;
+    return count;
+    
+}
+
+function legal_val(i, j, val) {
+    for (let k = 0; k < 81; k++) {
+        if (cells[k] == val && (
+                findRow(k) == i ||
+                findColumn(k) == j ||
+                find3x3(k) == find3x3((i * 9) + j)
+            )
+        ) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 new_game = () => {

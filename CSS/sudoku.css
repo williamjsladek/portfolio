@@ -70,6 +70,22 @@
     background-color: var(--grey);
 }
 
+#win_box {
+    height: 0px;
+    display: none;
+    transition: height 0.2s ease-out;
+}
+
+#not_done_box {
+    height: 0px;
+    display: none;
+    transition: height 0.2s ease-out;
+}
+
+.show {
+    height: auto !important;
+}
+
 #numbers {
     margin-top: 10px;
     display: flex;
