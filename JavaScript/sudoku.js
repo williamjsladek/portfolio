@@ -90,6 +90,8 @@ inputNumber = (num) => {
 
     if (selected.length == 0) {
         return;
+    } else if (selected.item(0).innerHTML == num) {
+        selected.item(0).innerHTML = "";
     } else {
         selected.item(0).innerHTML = num;
     }
@@ -225,7 +227,7 @@ function check_solution() {
             }
         }
     }
-    
+
     show_success();
 }
 
