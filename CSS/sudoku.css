@@ -9,12 +9,13 @@
 #sudoku_button_menu {
     display: flex;
     flex-direction: row;
+    margin-bottom: 10px;
 }
 
 #sudoku_button_menu div {
     border: 1px solid var(--pale-pink);
-    color: var(--pink);
     border-radius: 4px;
+    color: var(--pink);
     font-size: 20px;
     font-weight: bold;
     margin: 10px;
@@ -46,6 +47,11 @@
     width: 50px;
     justify-content: center;
     align-items: center;
+    user-select: none;
+}
+
+.cell:hover {
+    background-color: var(--pink);
 }
 
 .top_row {
@@ -58,4 +64,33 @@
 
 .box_right {
     border-right: var(--box-thickness);
+}
+
+.selected {
+    background-color: var(--grey);
+}
+
+#numbers {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+#numbers div {
+    border: 1px solid var(--pale-pink);
+    border-radius: 4px;
+    display: flex;
+    color: var(--pale-pink);
+    margin: 10px;
+    font-size: 25px;
+    font-weight: bold;
+    height: 50px;
+    width: 50px;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+#numbers div:hover {
+    background-color: var(--pink);
 }

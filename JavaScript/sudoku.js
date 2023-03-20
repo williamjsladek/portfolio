@@ -1,8 +1,10 @@
 let numbers = [];
 let numbers_state = [];
+let current_solution = [];
 let done = false;
 
 var content = document.getElementById("sudoku_content");
+var selected = document.getElementsByClassName("selected");
 
 function init_numbers() {
     for (i = 0; i < 81; i++) {
@@ -25,7 +27,9 @@ function shuffle(array) {
 
 function make_solution() {
     var index = 0;
+    done = false;
     sudokuStep(index);
+    current_solution = numbers;
 }
 
 function sudokuStep(index) {
@@ -62,7 +66,6 @@ function sudokuStep(index) {
 }
 
 new_game = () => {
-    done = false;
     init_numbers();
     make_solution();
     content.innerHTML = "";
@@ -78,14 +81,51 @@ new_game = () => {
 
         for (let j = 0; j < 9; j++) {
             if (j == 2 || j == 5) {
-                str += "<div class=\"cell box_right d-flex\">" + numbers[(9 * i) + j].value + "</div>";
+                str += "<div class=\"cell box_right d-flex\" onclick=\"select_cell(" + ((9 * i) + j) + ")\">" + numbers[(9 * i) + j].value + "</div>";
             } else {
-                str += "<div class=\"cell d-flex\">" + numbers[(9 * i) + j].value + "</div>";
+                str += "<div class=\"cell d-flex\" onclick=\"select_cell(" + ((9 * i) + j) + ")\">" + numbers[(9 * i) + j].value + "</div>";
             }
         }
 
         str += "</div>";
         content.insertAdjacentHTML('beforeend', str);
+    }
+}
+
+reset_game = () => {
+    for (let i = 0; i < content.children.length; i++) {
+        let row = content.children[i];
+        for (let j = 0; j < row.children.length; j++) {
+            let element = row.children[j];
+            
+            if (element.classList.contains("selected")) {
+                element.classList.remove("selected");
+            }
+
+            element.innerHTML = current_solution[(i * 9) + j].value;
+        }
+    }
+}
+
+select_cell = (index) => {
+    for (let i = 0; i < content.children.length; i++) {
+        let row = content.children[i];
+        for (let j = 0; j < row.children.length; j++) {
+            let element = row.children[j];
+            if (element.classList.contains("selected") && ((i * 9) + j) != index) {
+                element.classList.remove("selected");
+            } else if (((i * 9) + j) == index) {
+                element.classList.add("selected");
+            }
+        }
+    }
+}
+
+inputNumber = (num) => {
+    if (selected.length == 0) {
+        return;
+    } else {
+        selected.item(0).innerHTML = num;
     }
 }
 
