@@ -2,10 +2,6 @@
     --box-thickness: 4px solid var(--pale-pink)
 }
 
-#sudoku_intro {
-    font-size: 50px;
-}
-
 #sudoku_button_menu {
     display: flex;
     flex-direction: row;
