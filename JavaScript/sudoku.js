@@ -1,36 +1,123 @@
+let cells = [];
 let numbers = [];
 let numbers_state = [];
-let current_solution = [];
-let given_number_indexes = []; // should be length 53
+let given_number_indexes = [];
 let done = false;
 
 var content = document.getElementById("sudoku_content");
+var win_box = document.getElementById("win_box");
+var error_box = document.getElementById("not_done_box");
 var selected = document.getElementsByClassName("selected");
+
+new_game = () => {
+    hide_results();
+    content.innerHTML = "<div>Loading Solution</div>";
+    setTimeout(function () {
+        content.innerHTML = "<div>Generating Puzzle, Please wait.</div>";
+        init_numbers();
+        make_solution();
+        setTimeout(function () {
+            generate_puzzle();
+            content.innerHTML = "";
+            for (let i = 0; i < 9; i ++) {
+                let str = "";
+                if (i == 0) {
+                    str += "<div class=\"top_row row\">";
+                } else if (i == 2 || i == 5 || i == 8) {
+                    str += "<div class=\"bottom_row row\">";
+                } else {
+                    str += "<div class=\"row\">";
+                }
+        
+                for (let j = 0; j < 9; j++) {
+                    let classList = "cell d-flex", value = "";
+                    if (j == 2 || j == 5) {
+                        classList += " box_right";
+                    }
+                    
+                    if (given_number_indexes.indexOf((i * 9) + j) > -1) {
+                        classList += " cToSea";
+                        value = numbers[(i * 9) + j].value;
+                    }
+                    
+                    str += "<div class=\"" + classList + "\" onclick=\"select_cell(" + ((i * 9) + j) + ")\">" + value + "</div>";
+                }
+        
+                str += "</div>";
+                content.insertAdjacentHTML('beforeend', str);
+            }
+        }, 750);
+    }, 500);
+    
+}
+
+reset_game = () => {
+    hide_results();
+    for (let i = 0; i < content.children.length; i++) {
+        let row = content.children[i];
+        for (let j = 0; j < row.children.length; j++) {
+            let element = row.children[j];
+            
+            if (element.classList.contains("selected")) {
+                element.classList.remove("selected");
+            }
+
+            if (given_number_indexes.indexOf((i * 9) + j) > -1) {
+                element.innerHTML = numbers[(i * 9) + j].value;
+            } else {
+                element.innerHTML = "";
+            }
+        }
+    }
+}
+
+select_cell = (index) => {
+    for (let i = 0; i < content.children.length; i++) {
+        let row = content.children[i];
+        for (let j = 0; j < row.children.length; j++) {
+            let element = row.children[j];
+            if (element.classList.contains("selected") && ((i * 9) + j) != index) {
+                element.classList.remove("selected");
+            } else if (((i * 9) + j) == index && !element.classList.contains("cToSea")) {
+                element.classList.add("selected");
+            }
+        }
+    }
+}
+
+inputNumber = (num) => {
+    hide_results();
+
+    if (selected.length == 0) {
+        return;
+    } else {
+        selected.item(0).innerHTML = num;
+    }
+
+    for (let i = 0; i < content.children.length; i++) {
+        let row = content.children[i];
+        for (let j = 0; j < row.children.length; j++) {
+            let element = row.children[j];
+            if (element.innerHTML == "") {
+                return;
+            }
+        }
+    }
+
+    check_solution();
+}
 
 function init_numbers() {
     for (i = 0; i < 81; i++) {
         numbers[i] = JSON.parse(JSON.stringify({value: 0, possibleValues: shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9])}));
     }
+
     numbers_state[0] = JSON.parse(JSON.stringify(numbers));
 }
 
-function shuffle(array) {
-    let index = array.length, randIndex;
-    
-    while (index != 0) {
-        randIndex = Math.floor(Math.random() * index);
-        index--;
-        [array[index], array[randIndex]] = [array[randIndex], array[index]];
-    }
-
-    return array;
-}
-
 function make_solution() {
-    var index = 0;
     done = false;
-    sudokuStep(index);
-    current_solution = numbers;
+    sudokuStep(0);
 }
 
 function sudokuStep(index) {
@@ -66,8 +153,6 @@ function sudokuStep(index) {
     }
 }
 
-let cells = [];
-
 function generate_puzzle() {
     while (true) {
         for (let i = 0; i < 81; i++) {
@@ -75,9 +160,12 @@ function generate_puzzle() {
         }
 
         shuffle(given_number_indexes);
-        given_number_indexes.splice(Math.floor(Math.random() * 53), 28);
+
+        let x = 53;
+        given_number_indexes.splice(Math.floor(Math.random() * x), (81 - x));
         given_number_indexes.sort((a, b) => a - b);
         cells = [];
+
         for (let i = 0; i < 81; i++) {
             if (given_number_indexes.indexOf(i) > -1) {
                 cells[i] = numbers[i].value;
@@ -86,137 +174,59 @@ function generate_puzzle() {
             }
         }
         
-        if (is_valid(0, 0, 0) == 1) {
+        if (is_valid(0, 0) == 1) {
             break;
         }
     }
 }
 
-function is_valid(i, j, count) {
-    if (((i * 9) + j) >= 81) {
+function is_valid(index, count) {
+    if (index == 81) {
         return (count + 1);
     }
     
-    if (cells[(i * 9) + j] != 0) {
-        if (j == 9) {
-            return is_valid(i + 1, j - 9, count);
-        } else {
-            return is_valid(i, j + 1, count);
-        }
+    if (cells[index] != 0) {
+        return is_valid(index + 1, count);
     }
 
     for (let val = 1; val <= 9 && count < 2; val++) {
-        if (legal_val(i, j, val)) {
-
-            cells[(i * 9) + j] = val;
-            if (j == 9) {
-                count = is_valid(i + 1, j - 9, count);
-            } else {
-                count = is_valid(i, j + 1, count);
-            }
+        if (legal_val(index, val)) {
+            cells[index] = val;
+            count = is_valid(index + 1, count);
         }
     }
 
-    cells[(i * 9) + j] = 0;
+    cells[index] = 0;
     return count;
-    
 }
 
-function legal_val(i, j, val) {
+function legal_val(index, val) {
     for (let k = 0; k < 81; k++) {
         if (cells[k] == val && (
-                findRow(k) == i ||
-                findColumn(k) == j ||
-                find3x3(k) == find3x3((i * 9) + j)
+                k == index ||
+                findRow(k) == findRow(index) ||
+                findColumn(k) == findColumn(index) ||
+                find3x3(k) == find3x3(index)
             )
         ) {
             return false;
         }
     }
-
     return true;
 }
 
-new_game = () => {
-    init_numbers();
-    make_solution();
-    generate_puzzle();
-    content.innerHTML = "";
-    for (let i = 0; i < 9; i ++) {
-        let str = "";
-        if (i == 0) {
-            str += "<div class=\"top_row row\">";
-        } else if (i == 2 || i == 5 || i == 8) {
-            str += "<div class=\"bottom_row row\">";
-        } else {
-            str += "<div class=\"row\">";
-        }
-
-        for (let j = 0; j < 9; j++) {
-            let classList = "cell d-flex", value = "";
-            if (j == 2 || j == 5) {
-                classList += " box_right";
-            }
-            
-            if (given_number_indexes.indexOf((i * 9) + j) > -1) {
-                classList += " cToSea";
-                value = numbers[(i * 9) + j].value;
-            }
-            
-            str += "<div class=\"" + classList + "\" onclick=\"select_cell(" + ((i * 9) + j) + ")\">" + value + "</div>";
-        }
-
-        str += "</div>";
-        content.insertAdjacentHTML('beforeend', str);
-    }
-}
-
-reset_game = () => {
-    for (let i = 0; i < content.children.length; i++) {
-        let row = content.children[i];
-        for (let j = 0; j < row.children.length; j++) {
-            let element = row.children[j];
-            
-            if (element.classList.contains("selected")) {
-                element.classList.remove("selected");
-            }
-
-            if (given_number_indexes.indexOf((i * 9) + j) > -1) {
-                element.innerHTML = numbers[(i * 9) + j].value;
-            } else {
-                element.innerHTML = "";
-            }
-        }
-    }
-}
-
-select_cell = (index) => {
-    for (let i = 0; i < content.children.length; i++) {
-        let row = content.children[i];
-        for (let j = 0; j < row.children.length; j++) {
-            let element = row.children[j];
-            if (element.classList.contains("selected") && ((i * 9) + j) != index) {
-                element.classList.remove("selected");
-            } else if (((i * 9) + j) == index && !element.classList.contains("cToSea")) {
-                element.classList.add("selected");
-            }
-        }
-    }
-}
-
-inputNumber = (num) => {
-    if (selected.length == 0) {
-        return;
-    } else {
-        selected.item(0).innerHTML = num;
-    }
-    // if ever cell has a number
-    // check_solution();
-    //}
-}
-
 function check_solution() {
-
+    for (let i = 0; i < content.children.length; i++) {
+        let row = content.children[i];
+        for (let j = 0; j < row.children.length; j++) {
+            let element = row.children[j];
+            if (element.innerHTML != numbers[(i * 9) + j].value) {
+                return show_fail();
+            }
+        }
+    }
+    
+    show_success();
 }
 
 function divide(num, denom) {
@@ -233,4 +243,29 @@ function findColumn(index) {
 
 function find3x3(index) {
     return (3 * divide(divide(index, 9), 3)) + divide(index % 9, 3);
+}
+
+function hide_results() {
+    win_box.classList.remove("show");
+    error_box.classList.remove("show");
+}
+
+function show_fail() {
+    error_box.classList.add("show");
+}
+
+function show_success() {
+    win_box.classList.add("show");
+}
+
+function shuffle(array) {
+    let index = array.length, randIndex;
+    
+    while (index != 0) {
+        randIndex = Math.floor(Math.random() * index);
+        index--;
+        [array[index], array[randIndex]] = [array[randIndex], array[index]];
+    }
+
+    return array;
 }

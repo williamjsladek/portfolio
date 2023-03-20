@@ -25,6 +25,7 @@
 
 #sudoku_button_menu div:hover {
     background-color: var(--pale-pink);
+    cursor: pointer;
 }
 
 #sudoku_content {
@@ -52,6 +53,7 @@
 
 .cell:hover {
     background-color: var(--pink);
+    cursor: pointer;
 }
 
 .top_row {
@@ -73,17 +75,28 @@
 #win_box {
     height: 0px;
     display: none;
-    transition: height 0.2s ease-out;
+    transition: all 0.2s ease-out;
+}
+
+#win_box:hover {
+    cursor: pointer;
 }
 
 #not_done_box {
     height: 0px;
     display: none;
-    transition: height 0.2s ease-out;
+    transition: all 0.2s ease-out;
+}
+
+#not_done_box:hover {
+    cursor: pointer;
 }
 
 .show {
     height: auto !important;
+    display: block !important;
+    margin-top: 10px !important;
+    margin-bottom: -10px !important;
 }
 
 #numbers {
@@ -109,6 +122,7 @@
 
 #numbers div:hover {
     background-color: var(--pink);
+    cursor: pointer;
 }
 
 #information p a {
