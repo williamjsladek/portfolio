@@ -3,17 +3,19 @@ let numbers = [];
 let numbers_state = [];
 let given_number_indexes = [];
 let done = false;
+let difficulty = {current: 63, name: "an Easy", easy: 63, medium: 53, hard: 44, veryHard: 35, exHard: 28};
 
 var content = document.getElementById("sudoku_content");
 var win_box = document.getElementById("win_box");
 var error_box = document.getElementById("not_done_box");
+var diff_menu = document.getElementById("difficulty_menu");
 var selected = document.getElementsByClassName("selected");
 
 new_game = () => {
     hide_results();
     content.innerHTML = "<div>Loading Solution</div>";
     setTimeout(function () {
-        content.innerHTML = "<div>Generating Puzzle, Please wait.</div>";
+        content.innerHTML = "<div>Generating " + difficulty.name + " Puzzle, Please wait.</div>";
         init_numbers();
         make_solution();
         setTimeout(function () {
@@ -109,6 +111,32 @@ inputNumber = (num) => {
     check_solution();
 }
 
+set_difficulty = (diff) => {
+    for (let i = 0; i < diff_menu.children.length; i++) {
+        diff_menu.children[i].classList.remove("difficulty");
+        if (i == diff) {
+            diff_menu.children[i].classList.add("difficulty");
+        }
+    }
+
+    if (diff == 1) {
+        difficulty.current = difficulty.medium;
+        difficulty.name = "a Medium";
+    } else if (diff == 2) {
+        difficulty.current = difficulty.hard;
+        difficulty.name = "a Hard";
+    } else if (diff == 3) {
+        difficulty.current = difficulty.veryHard;
+        difficulty.name = "a Very Hard";
+    } else if (diff == 4) {
+        difficulty.current = difficulty.exHard;
+        difficulty.name = "an Extremely Hard";
+    } else {
+        difficulty.current = difficulty.easy;
+        difficulty.name = "an Easy";
+    }
+}
+
 function init_numbers() {
     for (i = 0; i < 81; i++) {
         numbers[i] = JSON.parse(JSON.stringify({value: 0, possibleValues: shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9])}));
@@ -163,8 +191,7 @@ function generate_puzzle() {
 
         shuffle(given_number_indexes);
 
-        let x = 53;
-        given_number_indexes.splice(Math.floor(Math.random() * x), (81 - x));
+        given_number_indexes.splice(Math.floor(Math.random() * difficulty.current), (81 - difficulty.current));
         given_number_indexes.sort((a, b) => a - b);
         cells = [];
 

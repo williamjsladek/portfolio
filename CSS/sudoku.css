@@ -2,13 +2,13 @@
     --box-thickness: 4px solid var(--pale-pink)
 }
 
-#sudoku_button_menu {
+.sudoku_button_menu {
     display: flex;
     flex-direction: row;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
-#sudoku_button_menu div {
+.sudoku_button_menu div {
     border: 1px solid var(--pale-pink);
     border-radius: 4px;
     color: var(--pink);
@@ -19,9 +19,14 @@
     user-select: none;
 }
 
-#sudoku_button_menu div:hover {
+.sudoku_button_menu div:hover {
     background-color: var(--pale-pink);
     cursor: pointer;
+}
+
+#difficulty_menu div {
+    margin: 5px 10px;
+    height: 20px;
 }
 
 #sudoku_content {
@@ -71,6 +76,10 @@
 
 .selected {
     background-color: var(--grey);
+}
+
+.difficulty {
+    background-color: var(--pale-pink);
 }
 
 #win_box {

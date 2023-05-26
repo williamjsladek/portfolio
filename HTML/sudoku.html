@@ -17,13 +17,20 @@
             </div>
             <div class="d-flex main">
                 <div class="content_title">My Sudoku Clone!</div>
-                <div id="sudoku_button_menu">
+                <div class="sudoku_button_menu">
                     <div onclick="new_game()" id="new_game_button">New Game</div>
                     <div onclick="reset_game()" id="reset_button">Reset</div>
                 </div>
+                <div class="sudoku_button_menu" id="difficulty_menu">
+                    <div class="difficulty" onclick="set_difficulty(0)">Easy</div>
+                    <div onclick="set_difficulty(1)">Medium</div>
+                    <div onclick="set_difficulty(2)">Hard</div>
+                    <div onclick="set_difficulty(3)">Very Hard</div>
+                    <div onclick="set_difficulty(4)">Extremely Hard</div>
+                </div>
                 <div id="sudoku_content"></div>
                 <div id="win_box" onclick="new_game()">Yay! Congratulations, you solved the puzzle! Click on me to try a new puzzle!</div>
-                <div id="not_done_box" onclick="reset_game()">Hmm... That's not quite right. Click on me to reset the game</div>
+                <div id="not_done_box" onclick="reset_game()">Hmm... That's not quite right. Click on me if you need to reset the game</div>
                 <div id="numbers">
                     <div onclick="inputNumber(1)">1</div>
                     <div onclick="inputNumber(2)">2</div>
