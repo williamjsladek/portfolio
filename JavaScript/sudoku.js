@@ -189,11 +189,48 @@ function generate_puzzle() {
             given_number_indexes[i] = i;
         }
 
-        shuffle(given_number_indexes);
+        let removed_number_indexes = [];
+        let pick_from_indexes = [];
 
-        given_number_indexes.splice(Math.floor(Math.random() * difficulty.current), (81 - difficulty.current));
-        given_number_indexes.sort((a, b) => a - b);
-        cells = [];
+        for (let i = 0; i < 81; i++) {
+            pick_from_indexes[i] = i;
+        }
+
+        while (removed_number_indexes.length < 9) {
+            let i = Math.floor(Math.random() * pick_from_indexes.length);
+            removed_number_indexes[removed_number_indexes.length] = pick_from_indexes[i];
+            
+            for (let j = 0; j < 81; j++) {
+                if (pick_from_indexes.indexOf(j) != -1) {
+                    if (findRow(j) == findRow(removed_number_indexes[removed_number_indexes.length - 1])) {
+                        pick_from_indexes.splice(pick_from_indexes.indexOf(j), 1);
+                    } else if (findColumn(j) == findColumn(removed_number_indexes[removed_number_indexes.length - 1])) {
+                        pick_from_indexes.splice(pick_from_indexes.indexOf(j), 1);
+                    } else if (find3x3(j) == find3x3(removed_number_indexes[removed_number_indexes.length - 1])) {
+                        pick_from_indexes.splice(pick_from_indexes.indexOf(j), 1);
+                    }
+                }
+            }
+        }
+
+        for (let i = 0; i < 9; i++) {
+            removed_number_indexes[i + 9] = 80 - removed_number_indexes[i];
+        }
+
+        removed_number_indexes = [...new Set(removed_number_indexes)];
+        removed_number_indexes.sort((a, b) => a - b);
+
+        for (let i = 0; i < removed_number_indexes.length; i++) {
+            given_number_indexes.splice(given_number_indexes.indexOf(removed_number_indexes[i]), 1);
+        }
+
+        for (let i = removed_number_indexes.length; i < 81 - difficulty.current; i += 2) {
+            let j1 = Math.floor(Math.random() * given_number_indexes.length);
+            j1 = given_number_indexes[j1];
+            j2 = 80 - j1;
+            given_number_indexes.splice(given_number_indexes.indexOf(j1), 1);
+            given_number_indexes.splice(given_number_indexes.indexOf(j2), 1);
+        }
 
         for (let i = 0; i < 81; i++) {
             if (given_number_indexes.indexOf(i) > -1) {
