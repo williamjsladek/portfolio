@@ -4,3 +4,16 @@
     margin-top: 15px;
 }
 
+.link {
+    font-size: 15px;
+    text-align: center;
+    padding: 3px;
+}
+
+.link a {
+    color: var(--pale-pink);
+}
+
+.link a:visited {
+    color: var(--sea-green);
+}
