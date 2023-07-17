@@ -1,11 +1,14 @@
 :root {
-    --box-thickness: 4px solid var(--pale-pink)
+    --box-thickness: 4px solid var(--pale-pink);
+    
 }
 
 .sudoku_button_menu {
     display: flex;
     flex-direction: row;
     margin-bottom: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .sudoku_button_menu div {
@@ -113,6 +116,8 @@
     margin-top: 10px;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 #numbers div {
@@ -124,7 +129,7 @@
     font-size: 25px;
     font-weight: bold;
     height: 50px;
-    width: 50px;
+    width: 40px;
     align-items: center;
     justify-content: center;
     user-select: none;
@@ -135,10 +140,32 @@
     cursor: pointer;
 }
 
-#information p a {
+#information {
+    text-align: center;
+    font-size: 15px;
+}
+
+#information a {
     color: var(--pink);
 }
 
-#information p a:visited {
+#information a:visited {
     color: var(--sea-green);
+}
+
+@media only screen and (max-width: 600px) {
+    .cell {
+        font-size: 20px !important;
+        height: 30px !important;
+        width: 30px !important;
+    }
+
+    #information {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    #numbers div {
+        width: 37px;
+    }
 }
