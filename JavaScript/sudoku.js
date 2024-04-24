@@ -232,6 +232,7 @@ function generate_puzzle_step() {
         }
         
         let validPerformStart = performance.now();
+        // validator
         if (is_valid(0, 0) == 1) {
             let validPerformEnd = performance.now();
             console.log("valid success exe time:", validPerformEnd -validPerformStart, "ms," , (validPerformEnd -validPerformStart) / 1000, "s");
@@ -262,7 +263,7 @@ function generate_puzzle() {
     generate_puzzle_step();
 
 
-
+    //reference code for generating puzzles given a solution
     /*
     while (true) {
         for (let i = 0; i < 81; i++) {
