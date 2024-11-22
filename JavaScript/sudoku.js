@@ -111,6 +111,17 @@ inputNumber = (num) => {
     check_solution();
 }
 
+clearNumber = () => {
+    console.log("claer hit");
+    hide_results();
+
+    if (selected.length == 0) {
+        return;
+    }
+
+    selected.item(0).innerHTML = "";
+}
+
 set_difficulty = (diff) => {
     for (let i = 0; i < diff_menu.children.length; i++) {
         diff_menu.children[i].classList.remove("difficulty");
