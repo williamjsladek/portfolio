@@ -4,14 +4,17 @@ let numbers_state = [];
 let given_number_indexes = [];
 let done = false;
 let difficulty = {current: 63, name: "an Easy", easy: 63, medium: 53, hard: 44, veryHard: 35, exHard: 28, impossible: 19};
+let note_mode = false;
 
 var content = document.getElementById("sudoku_content");
 var win_box = document.getElementById("win_box");
 var error_box = document.getElementById("not_done_box");
 var diff_menu = document.getElementById("difficulty_menu");
+var note_button = document.getElementById("note_toggle");
 var selected = document.getElementsByClassName("selected");
 
 new_game = () => {
+    note_mode = false;
     hide_results();
     content.innerHTML = "<div>Loading Solution</div>";
     setTimeout(function () {
@@ -35,7 +38,7 @@ new_game = () => {
                 }
         
                 for (let j = 0; j < 9; j++) {
-                    let classList = "cell d-flex", value = "";
+                    let classList = "cell", value = "";
                     if (j == 2 || j == 5) {
                         classList += " box_right";
                     }
@@ -90,22 +93,85 @@ select_cell = (index) => {
     }
 }
 
+toggleNoteMode = () => {
+    note_mode = !note_mode;
+
+    if (note_mode == true && note_button.classList.contains("note_toggle_active") == false) {
+        note_button.classList.add("note_toggle_active");
+    } else if (note_mode == false && note_button.classList.contains("note_toggle_active") == true) {
+        note_button.classList.remove("note_toggle_active");
+    }
+}
+
 inputNumber = (num) => {
     hide_results();
 
+    // if no cell is selected do nothing
     if (selected.length == 0) {
         return;
-    } else if (selected.item(0).innerHTML == num) {
+
+    // entering a number. If its the number in the cell, empy it
+    } else if (note_mode == false && selected.item(0).innerHTML == num) {
         selected.item(0).innerHTML = "";
-    } else {
+
+    // entering a number. Regardless of the contents of the cell, make the contents the number
+    } else if (note_mode == false) {
         selected.item(0).innerHTML = num;
+
+
+    // if there is a note grid:
+    //      check to see if the number we want to note is already there
+    //          if it is, remove it
+    //          if is is not, add it
+
+
+    // entering a note.
+    // if there is a number where we want to put a note, do nothing
+    } else if (note_mode == true) {
+        if (selected.item(0).innerHTML.length == 1) {
+            return;
+        }
+    // if there is no note_grid, i.e. empty cell but we want to enter a note:
+    //      create a div and give it the class note_grid
+    //      create the 3x3 note grid
+        if (selected.item(0).hasChildNodes() == false) {
+            let temp_note_grid = document.createElement("div");
+            temp_note_grid.classList.add("note_grid");
+            for (let i = 1; i <= 9; i++) {
+                let temp_note_class_name = "note_" + i;
+                let temp_note_node = document.createElement("div");
+                temp_note_node.classList.add(temp_note_class_name);
+                temp_note_grid.appendChild(temp_note_node);
+            }
+
+
+            selected.item(0).appendChild(temp_note_grid);
+        }
+
+    // make sure the noe grid exists, then remove/add the number we want to note respectively
+        if (selected.item(0).firstElementChild.classList.contains("note_grid")) {
+            if (selected.item(0).firstElementChild.children.item(num - 1).innerHTML == num) {
+                selected.item(0).firstElementChild.children.item(num - 1).innerHTML = "";
+            } else {
+                selected.item(0).firstElementChild.children.item(num - 1).innerHTML = num;
+            }
+        }
     }
 
+
+    // end function if there are any empty cells
+    // NEED TO FIX TO ALLOW FOR NOTES
+    // --- a cell with notes should also execute a return
     for (let i = 0; i < content.children.length; i++) {
         let row = content.children[i];
         for (let j = 0; j < row.children.length; j++) {
             let element = row.children[j];
             if (element.innerHTML == "") {
+                return;
+            }
+            // returns if the first child has a class called noe_grid
+            // it will if there are notes
+            if (element.hasChildNodes() == true) {
                 return;
             }
         }
