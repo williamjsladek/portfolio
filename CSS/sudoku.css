@@ -50,14 +50,73 @@
     font-weight: bold;
     height: 50px;
     width: 50px;
-    justify-content: center;
-    align-items: center;
     user-select: none;
+    text-align: center;
+    line-height: 50px;
 }
 
 .cell:hover {
     background-color: var(--pink);
     cursor: pointer;
+}
+
+.note_grid {
+    display: grid;
+    grid-template-areas:
+        'note_1 note_2 note_3'
+        'note_4 note_5 note_6'
+        'note_7 note_8 note_9';
+    justify-content: space-between;
+}
+
+.note_1, .note_2, .note_3, .note_4, .note_5, .note_6, .note_7, .note_8, .note_9 {
+    height: 15px;
+    width: 15px;
+    padding-top: 2px;
+    font-size: 12px;
+    text-align: center;
+    line-height: normal;
+}
+
+.note_1 {
+    grid-area: note_1;
+}
+
+.note_2 {
+    grid-area: note_2;
+}
+
+.note_3 {
+    grid-area: note_3;
+}
+
+.note_4 {
+    grid-area: note_4;
+}
+
+.note_5 {
+    grid-area: note_5;
+}
+
+.note_6 {
+    grid-area: note_6;
+}
+
+.note_7 {
+    grid-area: note_7;
+}
+
+.note_8 {
+    grid-area: note_8;
+}
+
+.note_9 {
+    grid-area: note_9;
+}
+
+.note_toggle_active, .input_number_active {
+    background-color: var(--grey);
+    color: var(--sea-green) !important;
 }
 
 .cToSea:hover {
@@ -158,6 +217,13 @@
         font-size: 20px !important;
         height: 30px !important;
         width: 30px !important;
+        line-height: 30px !important;
+    }
+
+    .note_1, .note_2, .note_3, .note_4, .note_5, .note_6, .note_7, .note_8, .note_9 {
+        height: 7px;
+        width: 7px;
+        font-size: 9px;
     }
 
     #information {

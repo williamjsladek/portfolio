@@ -3,18 +3,33 @@ let numbers = [];
 let numbers_state = [];
 let given_number_indexes = [];
 let done = false;
-let difficulty = {current: 63, name: "an Easy", easy: 63, medium: 53, hard: 44, veryHard: 35, exHard: 28, impossible: 19};
+let difficulty = {current: 63, name: "an Easy", easy: 63, medium: 53, hard: 44, veryHard: 36, exHard: 30, impossible: 19};
+let note_mode = false;
+let selected_number_input = 0;
 
 var content = document.getElementById("sudoku_content");
 var win_box = document.getElementById("win_box");
 var error_box = document.getElementById("not_done_box");
 var diff_menu = document.getElementById("difficulty_menu");
+var note_button = document.getElementById("note_toggle");
+var game_bar = document.getElementById("new_game_acions");
 var selected = document.getElementsByClassName("selected");
 
 new_game = () => {
+    if (note_mode == true) {
+        toggleNoteMode();
+    }
+
+    selectNumber(selected_number_input);
     hide_results();
     content.innerHTML = "<div>Loading Solution</div>";
+
+    setTimeout(function () {    
+        game_bar.classList.add("hidden");
+    }, 0);
+
     setTimeout(function () {
+
         content.innerHTML = "<div>Generating " + difficulty.name + " Puzzle, Please wait.</div>";
         init_numbers();
         make_solution();
@@ -23,6 +38,8 @@ new_game = () => {
             generate_puzzle();
             let gentimeEnd = performance.now();
             console.log("gen exe time:", gentimeEnd - gentime, "ms,", (gentimeEnd - gentime)/ 1000, "s");
+            
+            // create new sudoku grid
             content.innerHTML = "";
             for (let i = 0; i < 9; i ++) {
                 let str = "";
@@ -35,7 +52,7 @@ new_game = () => {
                 }
         
                 for (let j = 0; j < 9; j++) {
-                    let classList = "cell d-flex", value = "";
+                    let classList = "cell", value = "";
                     if (j == 2 || j == 5) {
                         classList += " box_right";
                     }
@@ -50,10 +67,13 @@ new_game = () => {
         
                 str += "</div>";
                 content.insertAdjacentHTML('beforeend', str);
+
+                if (game_bar.classList.contains("hidden")) {
+                    game_bar.classList.remove("hidden");
+                }
             }
         }, 750);
     }, 500);
-    
 }
 
 reset_game = () => {
@@ -74,6 +94,12 @@ reset_game = () => {
             }
         }
     }
+    
+    if (note_mode == true) {
+        toggleNoteMode();
+    }
+
+    selectNumber(selected_number_input);
 }
 
 select_cell = (index) => {
@@ -88,19 +114,71 @@ select_cell = (index) => {
             }
         }
     }
+
+    if (selected_number_input != 0) {
+        inputNumber(selected_number_input);
+    }
 }
 
 inputNumber = (num) => {
     hide_results();
 
+    // if no cell is selected do nothing
     if (selected.length == 0) {
         return;
-    } else if (selected.item(0).innerHTML == num) {
+
+    // entering a number. If its the number in the cell, empy it
+    } else if (note_mode == false && selected.item(0).innerHTML == num) {
         selected.item(0).innerHTML = "";
-    } else {
+
+    // entering a number. Regardless of the contents of the cell, make the contents the number
+    } else if (note_mode == false) {
         selected.item(0).innerHTML = num;
+
+
+    // if there is a note grid:
+    //      check to see if the number we want to note is already there
+    //          if it is, remove it
+    //          if is is not, add it
+
+
+    // entering a note.
+    // if there is a number where we want to put a note, do nothing
+    } else if (note_mode == true) {
+        if (selected.item(0).innerHTML.length == 1) {
+            return;
+        }
+    // if there is no note_grid, i.e. empty cell but we want to enter a note:
+    //      create a div and give it the class note_grid
+    //      create the 3x3 note grid
+        if (selected.item(0).hasChildNodes() == false) {
+            let temp_note_grid = document.createElement("div");
+            temp_note_grid.classList.add("note_grid");
+            for (let i = 1; i <= 9; i++) {
+                let temp_note_class_name = "note_" + i;
+                let temp_note_node = document.createElement("div");
+                temp_note_node.classList.add(temp_note_class_name);
+                temp_note_grid.appendChild(temp_note_node);
+            }
+
+
+            selected.item(0).appendChild(temp_note_grid);
+        }
+
+    // make sure the noe grid exists, then remove/add the number we want to note respectively
+        if (selected.item(0).firstElementChild.classList.contains("note_grid")) {
+            if (selected.item(0).firstElementChild.children.item(num - 1).innerHTML == num) {
+                selected.item(0).firstElementChild.children.item(num - 1).innerHTML = "";
+            } else {
+                selected.item(0).firstElementChild.children.item(num - 1).innerHTML = num;
+            }
+        }
     }
 
+
+    // end function if there are any empty cells
+    // NEED TO FIX TO ALLOW FOR NOTES
+    // --- a cell with notes should also execute a return
     for (let i = 0; i < content.children.length; i++) {
         let row = content.children[i];
         for (let j = 0; j < row.children.length; j++) {
@@ -108,10 +186,66 @@ inputNumber = (num) => {
             if (element.innerHTML == "") {
                 return;
             }
+            // returns if the first child has a class called noe_grid
+            // it will if there are notes
+            if (element.hasChildNodes() == true) {
+                return;
+            }
         }
     }
 
     check_solution();
+}
+
+selectNumber = (num) => {
+    if (num == 0) {
+        return;
+    }
+
+    // if no number input is currently selected:
+    // add class to the selected input number
+    // set selected number input to selected number
+    if (selected_number_input == 0) {
+        document.getElementById("input_number_" + num).classList.add("input_number_active");
+        selected_number_input = num;
+        return;
+    }
+
+    // if the number clicked is different from the currently selected input number
+    // remove class from old input number
+    // add class to new input number
+    // set selected number input to selected number
+    if (selected_number_input != num) {
+        if (document.getElementById("input_number_" + selected_number_input).classList.contains("input_number_active")) {
+            document.getElementById("input_number_" + selected_number_input).classList.remove("input_number_active");
+        }
+
+        document.getElementById("input_number_" + num).classList.add("input_number_active");
+        selected_number_input = num;
+        return;
+    }
+
+    // if the number clicked is the same as the current input number, toggle it off and set number input to 0
+    // remove class from the old input number
+    // set selected number input to 0
+    if (selected_number_input == num) {
+        if (document.getElementById("input_number_" + selected_number_input).classList.contains("input_number_active")) {
+            document.getElementById("input_number_" + selected_number_input).classList.remove("input_number_active");
+        }
+
+        selected_number_input = 0;
+        return;
+    }
+}
+
+toggleNoteMode = () => {
+    note_mode = !note_mode;
+
+    if (note_mode == true && note_button.classList.contains("note_toggle_active") == false) {
+        note_button.classList.add("note_toggle_active");
+    } else if (note_mode == false && note_button.classList.contains("note_toggle_active") == true) {
+        note_button.classList.remove("note_toggle_active");
+    }
 }
 
 clearNumber = () => {
@@ -217,7 +351,7 @@ function generate_puzzle_step() {
         }
     }
 
-    //remove it and the inverse (80 - picked)
+    //remove an index and it's inverse (80 - picked)
     // must be able to then pick the next pair in the list
     let paired_index_list = Array.from(paired_index_set);
 
@@ -246,13 +380,13 @@ function generate_puzzle_step() {
         // validator
         if (is_valid(0, 0) == 1) {
             let validPerformEnd = performance.now();
-            console.log("valid success exe time:", validPerformEnd -validPerformStart, "ms," , (validPerformEnd -validPerformStart) / 1000, "s");
+            console.log("valid success exe time:", validPerformEnd - validPerformStart, "ms," , (validPerformEnd - validPerformStart) / 1000, "s");
             if (generate_puzzle_step()) {
                 return true;
             }
         } else {
             let validPerformEnd = performance.now();
-            console.log("valid fail exe time:", validPerformEnd -validPerformStart, "ms," , (validPerformEnd -validPerformStart) / 1000, "s");
+            console.log("valid fail exe time:", validPerformEnd - validPerformStart, "ms," , (validPerformEnd - validPerformStart) / 1000, "s");
         }
 
         given_number_indexes.push(item[0]);
@@ -375,17 +509,45 @@ function is_validV2() {
 }
 
 function legal_val(index, val) {
-    for (let k = 0; k < 81; k++) {
-        if (cells[k] == val && (
-                k == index ||
-                findRow(k) == findRow(index) ||
-                findColumn(k) == findColumn(index) ||
-                find3x3(k) == find3x3(index)
-            )
-        ) {
+    let check_row = findRow(index);
+    for (let k = check_row * 9; k < (check_row * 9) + 9; k++) {
+        if (cells[k] == val) {
             return false;
         }
     }
+
+    let check_col = findColumn(index);
+    for (let k = check_col; k < 81; k += 9) {
+        if (cells[k] == val) {
+            return false;
+        }
+    }
+
+    let check_box = find3x3(index);
+    for (let k = (check_box * 3) + (divide(check_box, 3) * 18); k < ((check_box * 3) + (divide(check_box, 3) * 18)) + 21; k++) {
+        if (cells[k] == val) {
+            return false;
+        }
+
+        if (k % 3 == 2) {
+            k += 6;
+        }
+    }
+
+    /**
+     * 00 01 02 | 03 04 05 | 06 07 08
+     * 09 10 11 | 12 13 14 | 15 16 17
+     * 18 19 20 | 21 22 23 | 24 25 26
+     * ------------------------------
+     * 27 28 29 | 30 31 32 | 33 34 35
+     * 36 37 38 | 39 40 41 | 42 43 44
+     * 45 46 47 | 48 49 50 | 51 52 53
+     * ------------------------------
+     * 54 55 56 | 57 58 59 | 60 61 62
+     * 63 64 65 | 66 67 68 | 69 70 71
+     * 72 73 74 | 75 76 77 | 78 79 80
+     */
+
     return true;
 }
 
