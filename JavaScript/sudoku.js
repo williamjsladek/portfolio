@@ -3,7 +3,7 @@ let numbers = [];
 let numbers_state = [];
 let given_number_indexes = [];
 let done = false;
-let difficulty = {current: 63, name: "an Easy", easy: 63, medium: 53, hard: 44, veryHard: 35, exHard: 28, impossible: 19};
+let difficulty = {current: 63, name: "an Easy", easy: 63, medium: 53, hard: 44, veryHard: 36, exHard: 30, impossible: 19};
 let note_mode = false;
 
 var content = document.getElementById("sudoku_content");
@@ -26,6 +26,8 @@ new_game = () => {
             generate_puzzle();
             let gentimeEnd = performance.now();
             console.log("gen exe time:", gentimeEnd - gentime, "ms,", (gentimeEnd - gentime)/ 1000, "s");
+            
+            // create new sudoku grid
             content.innerHTML = "";
             for (let i = 0; i < 9; i ++) {
                 let str = "";
@@ -77,6 +79,7 @@ reset_game = () => {
             }
         }
     }
+    note_mode = false;
 }
 
 select_cell = (index) => {
@@ -283,7 +286,7 @@ function generate_puzzle_step() {
         }
     }
 
-    //remove it and the inverse (80 - picked)
+    //remove an index and it's inverse (80 - picked)
     // must be able to then pick the next pair in the list
     let paired_index_list = Array.from(paired_index_set);
 
@@ -312,13 +315,13 @@ function generate_puzzle_step() {
         // validator
         if (is_valid(0, 0) == 1) {
             let validPerformEnd = performance.now();
-            console.log("valid success exe time:", validPerformEnd -validPerformStart, "ms," , (validPerformEnd -validPerformStart) / 1000, "s");
+            console.log("valid success exe time:", validPerformEnd - validPerformStart, "ms," , (validPerformEnd - validPerformStart) / 1000, "s");
             if (generate_puzzle_step()) {
                 return true;
             }
         } else {
             let validPerformEnd = performance.now();
-            console.log("valid fail exe time:", validPerformEnd -validPerformStart, "ms," , (validPerformEnd -validPerformStart) / 1000, "s");
+            console.log("valid fail exe time:", validPerformEnd - validPerformStart, "ms," , (validPerformEnd - validPerformStart) / 1000, "s");
         }
 
         given_number_indexes.push(item[0]);
@@ -441,17 +444,45 @@ function is_validV2() {
 }
 
 function legal_val(index, val) {
-    for (let k = 0; k < 81; k++) {
-        if (cells[k] == val && (
-                k == index ||
-                findRow(k) == findRow(index) ||
-                findColumn(k) == findColumn(index) ||
-                find3x3(k) == find3x3(index)
-            )
-        ) {
+    let check_row = findRow(index);
+    for (let k = check_row * 9; k < (check_row * 9) + 9; k++) {
+        if (cells[k] == val) {
             return false;
         }
     }
+
+    let check_col = findColumn(index);
+    for (let k = check_col; k < 81; k += 9) {
+        if (cells[k] == val) {
+            return false;
+        }
+    }
+
+    let check_box = find3x3(index);
+    for (let k = (check_box * 3) + (divide(check_box, 3) * 18); k < ((check_box * 3) + (divide(check_box, 3) * 18)) + 21; k++) {
+        if (cells[k] == val) {
+            return false;
+        }
+
+        if (k % 3 == 2) {
+            k += 6;
+        }
+    }
+
+    /**
+     * 00 01 02 | 03 04 05 | 06 07 08
+     * 09 10 11 | 12 13 14 | 15 16 17
+     * 18 19 20 | 21 22 23 | 24 25 26
+     * ------------------------------
+     * 27 28 29 | 30 31 32 | 33 34 35
+     * 36 37 38 | 39 40 41 | 42 43 44
+     * 45 46 47 | 48 49 50 | 51 52 53
+     * ------------------------------
+     * 54 55 56 | 57 58 59 | 60 61 62
+     * 63 64 65 | 66 67 68 | 69 70 71
+     * 72 73 74 | 75 76 77 | 78 79 80
+     */
+
     return true;
 }
 

@@ -18,122 +18,123 @@
             </div>
             <div class="d-flex main">
                 <div class="content_title">My Sudoku Clone!</div>
-                <div class="sudoku_button_menu">
-                    <div onclick="new_game()" id="new_game_button">New Game</div>
-                    <div onclick="reset_game()" id="reset_button">Reset</div>
-                </div>
                 <div class="sudoku_button_menu" id="difficulty_menu">
                     <div class="difficulty" onclick="set_difficulty(0)">Easy</div>
                     <div onclick="set_difficulty(1)">Medium</div>
                     <div onclick="set_difficulty(2)">Hard</div>
                     <div onclick="set_difficulty(3)">Very Hard</div>
-                    <!-- <div onclick="set_difficulty(4)">Extremely Hard</div> -->
+                    <div onclick="set_difficulty(4)">Extremely Hard</div>
                     <!-- <div onclick="set_difficulty(5)">Impossible</div> -->
                 </div>
+                <div class="sudoku_button_menu">
+                    <div onclick="new_game()" id="new_game_button">New Game</div>
+                    <div onclick="reset_game()" id="reset_button">Reset</div>
+                </div>
                 <div id="sudoku_content">
-                    <!--
                     <div id="sudoku_content">
+                        <!-- empty sudoku grid -->
+                        <!--
                         <div class="top_row row">
                             <div class="cell" onclick="select_cell(0)"></div>
                             <div class="cell" onclick="select_cell(1)"></div>
-                            <div class="cell box_right cToSea" onclick="select_cell(2)"></div>
-                            <div class="cell cToSea" onclick="select_cell(3)"></div>
-                            <div class="cell cToSea" onclick="select_cell(4)"></div>
+                            <div class="cell box_right" onclick="select_cell(2)"></div>
+                            <div class="cell" onclick="select_cell(3)"></div>
+                            <div class="cell" onclick="select_cell(4)"></div>
                             <div class="cell box_right" onclick="select_cell(5)"></div>
                             <div class="cell" onclick="select_cell(6)"></div>
                             <div class="cell" onclick="select_cell(7)"></div>
-                            <div class="cell cToSea" onclick="select_cell(8)"></div>
+                            <div class="cell" onclick="select_cell(8)"></div>
                         </div>
                         <div class="row">
-                            <div class="cell cToSea" onclick="select_cell(9)"></div>
-                            <div class="cell cToSea" onclick="select_cell(10)"></div>
+                            <div class="cell" onclick="select_cell(9)"></div>
+                            <div class="cell" onclick="select_cell(10)"></div>
                             <div class="cell box_right" onclick="select_cell(11)"></div>
-                            <div class="cell cToSea" onclick="select_cell(12)"></div>
-                            <div class="cell cToSea" onclick="select_cell(13)"></div>
+                            <div class="cell" onclick="select_cell(12)"></div>
+                            <div class="cell" onclick="select_cell(13)"></div>
                             <div class="cell box_right" onclick="select_cell(14)"></div>
-                            <div class="cell cToSea" onclick="select_cell(15)"></div>
+                            <div class="cell" onclick="select_cell(15)"></div>
                             <div class="cell" onclick="select_cell(16)"></div>
-                            <div class="cell cToSea" onclick="select_cell(17)"></div>
+                            <div class="cell" onclick="select_cell(17)"></div>
                         </div>
                         <div class="bottom_row row">
-                            <div class="cell cToSea" onclick="select_cell(18)"></div>
+                            <div class="cell" onclick="select_cell(18)"></div>
                             <div class="cell" onclick="select_cell(19)"></div>
-                            <div class="cell box_right cToSea" onclick="select_cell(20)"></div>
+                            <div class="cell box_right" onclick="select_cell(20)"></div>
                             <div class="cell" onclick="select_cell(21)"></div>
                             <div class="cell" onclick="select_cell(22)"></div>
-                            <div class="cell box_right cToSea" onclick="select_cell(23)"></div>
+                            <div class="cell box_right" onclick="select_cell(23)"></div>
                             <div class="cell" onclick="select_cell(24)"></div>
                             <div class="cell" onclick="select_cell(25)"></div>
-                            <div class="cell cToSea" onclick="select_cell(26)"></div>
+                            <div class="cell" onclick="select_cell(26)"></div>
                         </div>
                         <div class="row">
                             <div class="cell" onclick="select_cell(27)"></div>
-                            <div class="cell cToSea" onclick="select_cell(28)"></div>
-                            <div class="cell box_right cToSea" onclick="select_cell(29)"></div>
+                            <div class="cell" onclick="select_cell(28)"></div>
+                            <div class="cell box_right" onclick="select_cell(29)"></div>
                             <div class="cell" onclick="select_cell(30)"></div>
-                            <div class="cell cToSea" onclick="select_cell(31)"></div>
-                            <div class="cell box_right cToSea" onclick="select_cell(32)"></div>
+                            <div class="cell" onclick="select_cell(31)"></div>
+                            <div class="cell box_right" onclick="select_cell(32)"></div>
                             <div class="cell" onclick="select_cell(33)"></div>
                             <div class="cell" onclick="select_cell(34)"></div>
-                            <div class="cell cToSea" onclick="select_cell(35)"></div>
+                            <div class="cell" onclick="select_cell(35)"></div>
                         </div>
                         <div class="row">
                             <div class="cell" onclick="select_cell(36)"></div>
                             <div class="cell" onclick="select_cell(37)"></div>
-                            <div class="cell box_right cToSea" onclick="select_cell(38)"></div>
-                            <div class="cell cToSea" onclick="select_cell(39)"></div>
-                            <div class="cell cToSea" onclick="select_cell(40)"></div>
-                            <div class="cell box_right cToSea" onclick="select_cell(41)"></div>
-                            <div class="cell cToSea" onclick="select_cell(42)"></div>
+                            <div class="cell box_right" onclick="select_cell(38)"></div>
+                            <div class="cell" onclick="select_cell(39)"></div>
+                            <div class="cell" onclick="select_cell(40)"></div>
+                            <div class="cell box_right" onclick="select_cell(41)"></div>
+                            <div class="cell" onclick="select_cell(42)"></div>
                             <div class="cell" onclick="select_cell(43)"></div>
                             <div class="cell" onclick="select_cell(44)"></div>
                         </div>
                         <div class="bottom_row row">
-                            <div class="cell cToSea" onclick="select_cell(45)"></div>
+                            <div class="cell" onclick="select_cell(45)"></div>
                             <div class="cell" onclick="select_cell(46)"></div>
                             <div class="cell box_right" onclick="select_cell(47)"></div>
-                            <div class="cell cToSea" onclick="select_cell(48)"></div>
-                            <div class="cell cToSea" onclick="select_cell(49)"></div>
+                            <div class="cell" onclick="select_cell(48)"></div>
+                            <div class="cell" onclick="select_cell(49)"></div>
                             <div class="cell box_right" onclick="select_cell(50)"></div>
-                            <div class="cell cToSea" onclick="select_cell(51)"></div>
-                            <div class="cell cToSea" onclick="select_cell(52)"></div>
+                            <div class="cell" onclick="select_cell(51)"></div>
+                            <div class="cell" onclick="select_cell(52)"></div>
                             <div class="cell" onclick="select_cell(53)"></div>
                         </div>
                         <div class="row">
-                            <div class="cell cToSea" onclick="select_cell(54)"></div>
+                            <div class="cell" onclick="select_cell(54)"></div>
                             <div class="cell" onclick="select_cell(55)"></div>
                             <div class="cell box_right" onclick="select_cell(56)"></div>
-                            <div class="cell cToSea" onclick="select_cell(57)"></div>
+                            <div class="cell" onclick="select_cell(57)"></div>
                             <div class="cell" onclick="select_cell(58)"></div>
                             <div class="cell box_right" onclick="select_cell(59)"></div>
-                            <div class="cell cToSea" onclick="select_cell(60)"></div>
+                            <div class="cell" onclick="select_cell(60)"></div>
                             <div class="cell" onclick="select_cell(61)"></div>
-                            <div class="cell cToSea" onclick="select_cell(62)"></div>
+                            <div class="cell" onclick="select_cell(62)"></div>
                         </div>
                         <div class="row">
-                            <div class="cell cToSea" onclick="select_cell(63)"></div>
+                            <div class="cell" onclick="select_cell(63)"></div>
                             <div class="cell" onclick="select_cell(64)"></div>
-                            <div class="cell box_right cToSea" onclick="select_cell(65)"></div>
+                            <div class="cell box_right" onclick="select_cell(65)"></div>
                             <div class="cell" onclick="select_cell(66)"></div>
-                            <div class="cell cToSea" onclick="select_cell(67)"></div>
-                            <div class="cell box_right cToSea" onclick="select_cell(68)"></div>
+                            <div class="cell" onclick="select_cell(67)"></div>
+                            <div class="cell box_right" onclick="select_cell(68)"></div>
                             <div class="cell" onclick="select_cell(69)"></div>
-                            <div class="cell cToSea" onclick="select_cell(70)"></div>
-                            <div class="cell cToSea" onclick="select_cell(71)"></div>
+                            <div class="cell" onclick="select_cell(70)"></div>
+                            <div class="cell" onclick="select_cell(71)"></div>
                         </div>
                         <div class="bottom_row row">
-                            <div class="cell cToSea" onclick="select_cell(72)"></div>
+                            <div class="cell" onclick="select_cell(72)"></div>
                             <div class="cell" onclick="select_cell(73)"></div>
                             <div class="cell box_right" onclick="select_cell(74)"></div>
                             <div class="cell" onclick="select_cell(75)"></div>
-                            <div class="cell cToSea" onclick="select_cell(76)"></div>
-                            <div class="cell box_right cToSea" onclick="select_cell(77)"></div>
-                            <div class="cell cToSea" onclick="select_cell(78)"></div>
+                            <div class="cell" onclick="select_cell(76)"></div>
+                            <div class="cell box_right" onclick="select_cell(77)"></div>
+                            <div class="cell" onclick="select_cell(78)"></div>
                             <div class="cell" onclick="select_cell(79)"></div>
                             <div class="cell" onclick="select_cell(80)"></div>
                         </div>
+                        -->
                     </div>
-                    -->
                 </div>
                 <div id="win_box" onclick="new_game()">Yay! Congratulations, you solved the puzzle! Click on me to try a new puzzle!</div>
                 <div id="not_done_box" onclick="reset_game()">Hmm... That's not quite right. Click on me if you need to reset the game</div>

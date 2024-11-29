@@ -219,6 +219,12 @@
         line-height: 30px !important;
     }
 
+    .note_1, .note_2, .note_3, .note_4, .note_5, .note_6, .note_7, .note_8, .note_9 {
+        height: 7px;
+        width: 7px;
+        font-size: 9px;
+    }
+
     #information {
         font-size: 20px;
         text-align: center;
