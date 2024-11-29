@@ -5,19 +5,31 @@ let given_number_indexes = [];
 let done = false;
 let difficulty = {current: 63, name: "an Easy", easy: 63, medium: 53, hard: 44, veryHard: 36, exHard: 30, impossible: 19};
 let note_mode = false;
+let selected_number_input = 0;
 
 var content = document.getElementById("sudoku_content");
 var win_box = document.getElementById("win_box");
 var error_box = document.getElementById("not_done_box");
 var diff_menu = document.getElementById("difficulty_menu");
 var note_button = document.getElementById("note_toggle");
+var game_bar = document.getElementById("new_game_acions");
 var selected = document.getElementsByClassName("selected");
 
 new_game = () => {
-    note_mode = false;
+    if (note_mode == true) {
+        toggleNoteMode();
+    }
+
+    selectNumber(selected_number_input);
     hide_results();
     content.innerHTML = "<div>Loading Solution</div>";
+
+    setTimeout(function () {    
+        game_bar.classList.add("hidden");
+    }, 0);
+
     setTimeout(function () {
+
         content.innerHTML = "<div>Generating " + difficulty.name + " Puzzle, Please wait.</div>";
         init_numbers();
         make_solution();
@@ -55,10 +67,13 @@ new_game = () => {
         
                 str += "</div>";
                 content.insertAdjacentHTML('beforeend', str);
+
+                if (game_bar.classList.contains("hidden")) {
+                    game_bar.classList.remove("hidden");
+                }
             }
         }, 750);
     }, 500);
-    
 }
 
 reset_game = () => {
@@ -79,7 +94,12 @@ reset_game = () => {
             }
         }
     }
-    note_mode = false;
+    
+    if (note_mode == true) {
+        toggleNoteMode();
+    }
+
+    selectNumber(selected_number_input);
 }
 
 select_cell = (index) => {
@@ -94,15 +114,9 @@ select_cell = (index) => {
             }
         }
     }
-}
 
-toggleNoteMode = () => {
-    note_mode = !note_mode;
-
-    if (note_mode == true && note_button.classList.contains("note_toggle_active") == false) {
-        note_button.classList.add("note_toggle_active");
-    } else if (note_mode == false && note_button.classList.contains("note_toggle_active") == true) {
-        note_button.classList.remove("note_toggle_active");
+    if (selected_number_input != 0) {
+        inputNumber(selected_number_input);
     }
 }
 
@@ -181,6 +195,57 @@ inputNumber = (num) => {
     }
 
     check_solution();
+}
+
+selectNumber = (num) => {
+    if (num == 0) {
+        return;
+    }
+
+    // if no number input is currently selected:
+    // add class to the selected input number
+    // set selected number input to selected number
+    if (selected_number_input == 0) {
+        document.getElementById("input_number_" + num).classList.add("input_number_active");
+        selected_number_input = num;
+        return;
+    }
+
+    // if the number clicked is different from the currently selected input number
+    // remove class from old input number
+    // add class to new input number
+    // set selected number input to selected number
+    if (selected_number_input != num) {
+        if (document.getElementById("input_number_" + selected_number_input).classList.contains("input_number_active")) {
+            document.getElementById("input_number_" + selected_number_input).classList.remove("input_number_active");
+        }
+
+        document.getElementById("input_number_" + num).classList.add("input_number_active");
+        selected_number_input = num;
+        return;
+    }
+
+    // if the number clicked is the same as the current input number, toggle it off and set number input to 0
+    // remove class from the old input number
+    // set selected number input to 0
+    if (selected_number_input == num) {
+        if (document.getElementById("input_number_" + selected_number_input).classList.contains("input_number_active")) {
+            document.getElementById("input_number_" + selected_number_input).classList.remove("input_number_active");
+        }
+
+        selected_number_input = 0;
+        return;
+    }
+}
+
+toggleNoteMode = () => {
+    note_mode = !note_mode;
+
+    if (note_mode == true && note_button.classList.contains("note_toggle_active") == false) {
+        note_button.classList.add("note_toggle_active");
+    } else if (note_mode == false && note_button.classList.contains("note_toggle_active") == true) {
+        note_button.classList.remove("note_toggle_active");
+    }
 }
 
 clearNumber = () => {

@@ -26,7 +26,7 @@
                     <div onclick="set_difficulty(4)">Extremely Hard</div>
                     <!-- <div onclick="set_difficulty(5)">Impossible</div> -->
                 </div>
-                <div class="sudoku_button_menu">
+                <div id="new_game_acions" class="sudoku_button_menu">
                     <div onclick="new_game()" id="new_game_button">New Game</div>
                     <div onclick="reset_game()" id="reset_button">Reset</div>
                 </div>
@@ -139,15 +139,15 @@
                 <div id="win_box" onclick="new_game()">Yay! Congratulations, you solved the puzzle! Click on me to try a new puzzle!</div>
                 <div id="not_done_box" onclick="reset_game()">Hmm... That's not quite right. Click on me if you need to reset the game</div>
                 <div id="numbers">
-                    <div onclick="inputNumber(1)">1</div>
-                    <div onclick="inputNumber(2)">2</div>
-                    <div onclick="inputNumber(3)">3</div>
-                    <div onclick="inputNumber(4)">4</div>
-                    <div onclick="inputNumber(5)">5</div>
-                    <div onclick="inputNumber(6)">6</div>
-                    <div onclick="inputNumber(7)">7</div>
-                    <div onclick="inputNumber(8)">8</div>
-                    <div onclick="inputNumber(9)">9</div>
+                    <div id="input_number_1" onclick="selectNumber(1)">1</div>
+                    <div id="input_number_2" onclick="selectNumber(2)">2</div>
+                    <div id="input_number_3" onclick="selectNumber(3)">3</div>
+                    <div id="input_number_4" onclick="selectNumber(4)">4</div>
+                    <div id="input_number_5" onclick="selectNumber(5)">5</div>
+                    <div id="input_number_6" onclick="selectNumber(6)">6</div>
+                    <div id="input_number_7" onclick="selectNumber(7)">7</div>
+                    <div id="input_number_8" onclick="selectNumber(8)">8</div>
+                    <div id="input_number_9" onclick="selectNumber(9)">9</div>
                     <div id="note_toggle" onclick="toggleNoteMode()"><i class="fa-solid fa-pencil"></i></div>
                     <div onclick="clearNumber()"><i class="fa-solid fa-delete-left"></i></div>
                 </div>

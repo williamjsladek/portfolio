@@ -114,7 +114,8 @@
     grid-area: note_9;
 }
 
-.note_toggle_active, .note_toggle_active:hover {
+.note_toggle_active, .input_number_active {
+    background-color: var(--grey);
     color: var(--sea-green) !important;
 }
 
