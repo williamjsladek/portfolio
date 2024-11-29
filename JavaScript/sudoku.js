@@ -186,9 +186,11 @@ inputNumber = (num) => {
             if (element.innerHTML == "") {
                 return;
             }
-            // returns if the first child has a class called noe_grid
+            // returns if the first child has a class called note_grid
             // it will if there are notes
-            if (element.hasChildNodes() == true) {
+            if (element.innerHTML.includes("note_grid")) {
+                console.log("hit note");
+                
                 return;
             }
         }
@@ -552,6 +554,8 @@ function legal_val(index, val) {
 }
 
 function check_solution() {
+    console.log("check solution hit");
+    
     for (let i = 0; i < content.children.length; i++) {
         let row = content.children[i];
         for (let j = 0; j < row.children.length; j++) {
